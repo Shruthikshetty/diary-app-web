@@ -1,5 +1,6 @@
 "use client";
 
+import { AppButton } from "../components/button";
 import { AppInput } from "../components/input";
 
 function Login() {
@@ -31,6 +32,9 @@ function Login() {
             title="Password"
             rightbuttonText="Forgot password?"
           />
+          {/* button login*/}
+          <AppButton text="Log in" onClick={() => {}} />
+          {/*create new account  */}
         </div>
       </main>
       <footer className="flex flex-row justify-between gap-5 px-5 pt-5 pb-10">
