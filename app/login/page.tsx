@@ -5,6 +5,8 @@ import { AppButton } from "../components/button";
 import { AppInput } from "../components/input";
 import { Endpoints } from "../constants/endpoints";
 import { useRouter } from "next/navigation";
+import { AppHeader } from "../components/header";
+import { AppFooter } from "../components/footer";
 
 function Login() {
   const [name, setName] = useState("");
@@ -16,6 +18,7 @@ function Login() {
   const onSubmit = async () => {
     if (!name || !pass) {
       alert("Please fill in all fields");
+      return;
     }
 
     // call api
@@ -47,15 +50,7 @@ function Login() {
   return (
     <div className="flex-1 flex-col flex justify-between">
       {/* header */}
-      <header className="p-5 flex flex-row justify-between border-border border-b-2">
-        {/* left icon  */}
-        <div className="flex flex-row gap-3 items-center">
-          <p className="text-text font-bold text-lg">STILL.</p>
-          <div className="border-r-2 border-border h-full"></div>
-          <p>A little space for you.</p>
-        </div>
-        {/* middle content  */}
-      </header>
+      <AppHeader />
       <main className="flex items-center justify-center">
         <div className="border-border border-2 rounded-lg p-5 flex flex-col gap-5">
           {/* title section*/}
@@ -98,12 +93,7 @@ function Login() {
           </button>
         </div>
       </main>
-      <footer className="flex flex-row justify-between gap-5 px-5 pt-5 pb-10">
-        {/* left text  */}
-        <p className="text-text text-base">A small moment. A lasting memory.</p>
-        {/* right text */}
-        <p className="text-text text-base">Your thoughts, just yours.</p>
-      </footer>
+      <AppFooter />
     </div>
   );
 }
