@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --background: var(--blush);
-  --foreground: var(--dust-rosy);
+  --berry: #b62e50;
+  --deep-plume: #713747;
+  --dust-rosy: #925c6c;
+  --petal: #eed5df;
+  --blush: #fffbfc;
+  --rosy-mist: #eed5df;
+  --white: #fff;
 }
 
 @theme inline {
@@ -18,7 +23,7 @@
   --color-surface: var(--rosy-mist);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --berry: #b62e50;
     --deep-plume: #713747;
@@ -28,7 +33,7 @@
     --rosy-mist: #eed5df;
     --white: #fff;
   }
-}
+} */
 
 body {
   background: var(--blush);
