@@ -28,7 +28,7 @@ export function AppInput({
         </div>
       )}
       <input
-        className={`border-2 border-border rounded-lg outline-none focus:border-primary min-h-10 w-full transition-colors px-3 ${className}`}
+        className={`border-2 border-border bg-surface rounded-lg outline-none focus:border-primary min-h-10 w-full transition-colors px-3 ${className}`}
         {...rest}
       ></input>
     </div>
