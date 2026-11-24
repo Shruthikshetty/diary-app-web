@@ -26,6 +26,7 @@ type GetEntriesResponse = {
 
 export default function Home() {
   const [entries, setEntries] = useState<Entries[]>([]);
+  const [selectedEntry, setSelectedEntry] = useState<Entries | null>(null);
 
   // function to fetch entries
   async function fetchEntries() {
@@ -39,7 +40,6 @@ export default function Home() {
       alert("failed to fetch your diary entries");
     }
     setEntries(data.data);
-    console.log(data.data);
   }
   // fetch data
   useEffect(() => {
@@ -82,21 +82,28 @@ export default function Home() {
           {/* all the entries */}
           <h2 className="text-text font-semibold text-sm">YOUR MOMENTS</h2>
           {entries?.map((entry) => (
-            <div
-              className="flex flex-col gap-1 hover:border-border hover:bg-border/80 border-2 border-transparent rounded-lg transition-all p-2 hover:cursor-pointer"
+            <button
+              className={`flex flex-col gap-1 hover:border-border hover:bg-border/80 border-2 border-transparent rounded-lg transition-all p-2 hover:cursor-pointer ${
+                selectedEntry?._id === entry._id
+                  ? "bg-surface/80 border-border"
+                  : ""
+              }`}
               key={entry._id}
+              onClick={() => {
+                setSelectedEntry(entry);
+              }}
             >
               {/* date */}
               <div className="flex flex-row justify-between">
-                <p className="text-sm">{entry.date}</p>
-                <button>
+                <p className="text-sm text-left">{entry.date}</p>
+                <div>
                   <Image src="/star.svg" alt="star" width={16} height={16} />
-                </button>
+                </div>
               </div>
               {/* title */}
-              <p className="text-header text-base">{entry.title}</p>
-              <p className="line-clamp-2 text-sm">{entry.content}</p>
-            </div>
+              <p className="text-header text-base text-left">{entry.title}</p>
+              <p className="line-clamp-2 text-sm text-left">{entry.content}</p>
+            </button>
           ))}
         </div>
         {/* diary content */}
