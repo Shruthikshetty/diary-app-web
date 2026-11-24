@@ -107,7 +107,30 @@ export default function Home() {
           ))}
         </div>
         {/* diary content */}
-        <div></div>
+        <div className="flex-1">
+          {/* utilities */}
+          <div className="px-5 py-3 border-b-2 border-border w-full flex flex-row justify-between items-center ">
+            <p>My journal &gt; {selectedEntry?.date}</p>
+            <div className="flex flex-row gap-5">
+              <button>
+                {/*@TODO toggle based on fav or not */}
+                <Image src={"/star.svg"} alt="star" width={16} height={16} />
+              </button>
+              <button>Edit entry</button>
+            </div>
+          </div>
+          {/* main content */}
+          <div className="py-10 px-20">
+            <h2 className="text-base">------------ A PAGE FROM YOUR LIFE</h2>
+            {/* title */}
+            <p className="text-3xl text-header font-semibold py-5">
+              {selectedEntry?.title}
+            </p>
+            <div className="w-full border-border border-b my-5"></div>
+            {/* separator */}
+            <p>{selectedEntry?.content}</p>
+          </div>
+        </div>
       </main>
     </div>
   );
