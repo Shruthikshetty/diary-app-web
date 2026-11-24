@@ -4,4 +4,5 @@ export const Endpoints = {
   login: baseUrl + "api/login",
   signup: baseUrl + "api/signup",
   getAllEntries: baseUrl + "api/diary",
+  updateEntry: baseUrl + "api/diary",
 };
