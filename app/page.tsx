@@ -145,7 +145,7 @@ export default function Home() {
           ))}
         </div>
         {/* diary content */}
-        <div className="flex-1">
+        <div className="flex flex-col h-full w-full">
           {/* utilities */}
           <div className="px-5 py-3 border-b-2 border-border w-full flex flex-row justify-between items-center ">
             <p>My journal &gt; {formatDate(selectedEntry?.date)}</p>
@@ -167,7 +167,7 @@ export default function Home() {
             </div>
           </div>
           {/* main content */}
-          <div className="py-10 px-20">
+          <div className="py-10 px-20 h-full overflow-scroll">
             <h2 className="text-base">------------ A PAGE FROM YOUR LIFE</h2>
             {/* title */}
             {isEditing ? (
@@ -186,12 +186,12 @@ export default function Home() {
             {/* separator */}
             {isEditing ? (
               <textarea
-                className="border-none outline-none w-full"
+                className="border-none outline-none w-full h-[50%] min-h-40"
                 value={newContent}
                 onChange={(e) => setNewContent(e.target.value)}
               ></textarea>
             ) : (
-              <p>{selectedEntry?.content}</p>
+              <p className="whitespace-pre-wrap">{selectedEntry?.content}</p>
             )}
 
             {isEditing ? (
