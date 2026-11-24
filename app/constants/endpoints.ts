@@ -5,4 +5,5 @@ export const Endpoints = {
   signup: baseUrl + "api/signup",
   getAllEntries: baseUrl + "api/diary",
   updateEntry: baseUrl + "api/diary",
+  createEntry: baseUrl + "api/diary",
 };

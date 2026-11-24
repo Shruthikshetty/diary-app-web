@@ -29,6 +29,7 @@ export default function Home() {
   const [entries, setEntries] = useState<Entries[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<Entries | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState(selectedEntry?.title || "");
   const [newContent, setNewContent] = useState(selectedEntry?.content || "");
 
@@ -77,6 +78,32 @@ export default function Home() {
     });
   }
 
+  // function to handle add the entry
+  async function handleAddEntry() {
+    // add the data
+    const res = await fetch(Endpoints.createEntry, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: newTitle,
+        content: newContent,
+        date: new Date().toISOString(),
+        mood: "happy", //@TODO fix later
+      }),
+    });
+    if (!res.ok) {
+      alert("failed to add your diary entry");
+    }
+    // refetch the data
+    fetchEntries().then(() => {
+      setIsAdding(false);
+      setIsEditing(false);
+    });
+  }
+
   // fetch data
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -100,7 +127,13 @@ export default function Home() {
           {/*  add entry button */}
           <AppButton
             text="+ New entry"
-            onClick={() => console.log("New entry")}
+            onClick={() => {
+              setIsAdding(true);
+              setIsEditing(true);
+              setSelectedEntry(null);
+              setNewTitle("");
+              setNewContent("");
+            }}
           />
           {/* search your thoughts */}
           <AppInput placeholder="Search your thoughts..." />
@@ -197,8 +230,8 @@ export default function Home() {
             {isEditing ? (
               <div className="mt-5 flex justify-end">
                 <AppButton
-                  text={"Update"}
-                  onClick={handleUpdateEntry}
+                  text={isAdding ? "Add" : "Update"}
+                  onClick={isAdding ? handleAddEntry : handleUpdateEntry}
                   className="max-w-[20%]"
                 />
               </div>
