@@ -1,11 +1,51 @@
 "use client";
 
+import { useState } from "react";
 import { AppButton } from "./components/button";
 import { AppHeader } from "./components/header";
 import { AppInput } from "./components/input";
 import Image from "next/image";
+import { useEffect } from "react";
+import { Endpoints } from "./constants/endpoints";
+
+type Entries = {
+  _id: string;
+  userId: string;
+  title: string;
+  mood: string;
+  content: string;
+  date: string; // date string
+  createdAt: string;
+  updatedAt: string;
+};
+
+type GetEntriesResponse = {
+  data: Entries[];
+  success: boolean;
+};
 
 export default function Home() {
+  const [entries, setEntries] = useState<Entries[]>([]);
+
+  // function to fetch entries
+  async function fetchEntries() {
+    // fetch data from server
+    const res = await fetch(Endpoints.getAllEntries, {
+      method: "GET",
+      credentials: "include",
+    });
+    const data: GetEntriesResponse = await res.json();
+    if (!res.ok) {
+      alert("failed to fetch your diary entries");
+    }
+    setEntries(data.data);
+    console.log(data.data);
+  }
+  // fetch data
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchEntries();
+  }, []);
   return (
     <div className="h-screen flex-1 flex-col flex">
       <AppHeader />
@@ -17,7 +57,7 @@ export default function Home() {
             <h1 className="text-lg font-semibold text-header">Your journal</h1>
             {/* no of entries */}
             <p className="text-xs p-1 border border-border rounded-md">
-              6 entries
+              {entries?.length ?? 0} entries
             </p>
           </div>
 
@@ -41,23 +81,23 @@ export default function Home() {
 
           {/* all the entries */}
           <h2 className="text-text font-semibold text-sm">YOUR MOMENTS</h2>
-
-          {/* list of entries */}
-          <div className="flex flex-col gap-1">
-            {/* date */}
-            <div className="flex flex-row justify-between">
-              <p className="text-sm">June 17, 2025</p>
-              <button>
-                <Image src="/star.svg" alt="star" width={16} height={16} />
-              </button>
+          {entries?.map((entry) => (
+            <div
+              className="flex flex-col gap-1 hover:border-border hover:bg-border/80 border-2 border-transparent rounded-lg transition-all p-2 hover:cursor-pointer"
+              key={entry._id}
+            >
+              {/* date */}
+              <div className="flex flex-row justify-between">
+                <p className="text-sm">{entry.date}</p>
+                <button>
+                  <Image src="/star.svg" alt="star" width={16} height={16} />
+                </button>
+              </div>
+              {/* title */}
+              <p className="text-header text-base">{entry.title}</p>
+              <p className="line-clamp-2 text-sm">{entry.content}</p>
             </div>
-            {/* title */}
-            <p className="text-header text-base">A little room to grow</p>
-            <p className="line-clamp-2 text-sm">
-              I’ve been thinking about how much can change when we give
-              ourselves a little room to grow.{" "}
-            </p>
-          </div>
+          ))}
         </div>
         {/* diary content */}
         <div></div>

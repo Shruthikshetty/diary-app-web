@@ -29,6 +29,7 @@ function Login() {
           name: name,
           password: pass,
         }),
+        credentials: "include",
       });
 
       const data = await response.json();
