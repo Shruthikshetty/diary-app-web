@@ -150,32 +150,42 @@ export default function Home() {
 
           {/* all the entries */}
           <h2 className="text-text font-semibold text-sm">YOUR MOMENTS</h2>
-          {entries?.map((entry) => (
-            <button
-              className={`flex flex-col gap-1 hover:border-border hover:bg-border/80 border-2 border-transparent rounded-lg transition-all p-2 hover:cursor-pointer ${
-                selectedEntry?._id === entry._id
-                  ? "bg-surface/80 border-border"
-                  : ""
-              }`}
-              key={entry._id}
-              onClick={() => {
-                setSelectedEntry(entry);
-                setNewTitle(entry.title);
-                setNewContent(entry.content);
-              }}
-            >
-              {/* date */}
-              <div className="flex flex-row justify-between">
-                <p className="text-sm text-left">{formatDate(entry.date)}</p>
-                <div>
-                  <Image src="/star.svg" alt="star" width={16} height={16} />
+          <div
+            className="overflow-auto w-full flex flex-col"
+            style={{
+              scrollbarWidth: "thin",
+              scrollbarColor: "var(--petal) transparent",
+            }}
+          >
+            {entries?.map((entry) => (
+              <button
+                className={`flex flex-col gap-1 hover:border-border hover:bg-border/80 border-2 border-transparent rounded-lg transition-all p-2 hover:cursor-pointer ${
+                  selectedEntry?._id === entry._id
+                    ? "bg-surface/80 border-border"
+                    : ""
+                }`}
+                key={entry._id}
+                onClick={() => {
+                  setSelectedEntry(entry);
+                  setNewTitle(entry.title);
+                  setNewContent(entry.content);
+                }}
+              >
+                {/* date */}
+                <div className="flex flex-row justify-between">
+                  <p className="text-sm text-left">{formatDate(entry.date)}</p>
+                  <div>
+                    <Image src="/star.svg" alt="star" width={16} height={16} />
+                  </div>
                 </div>
-              </div>
-              {/* title */}
-              <p className="text-header text-base text-left">{entry.title}</p>
-              <p className="line-clamp-2 text-sm text-left">{entry.content}</p>
-            </button>
-          ))}
+                {/* title */}
+                <p className="text-header text-base text-left">{entry.title}</p>
+                <p className="line-clamp-2 text-sm text-left">
+                  {entry.content}
+                </p>
+              </button>
+            ))}
+          </div>
         </div>
         {/* diary content */}
         <div className="flex flex-col h-full w-full">
@@ -200,7 +210,12 @@ export default function Home() {
             </div>
           </div>
           {/* main content */}
-          <div className="py-10 px-20 h-full overflow-scroll">
+          <div
+            className="py-10 px-20 h-full overflow-auto"
+            style={{
+              scrollbarWidth: "thin",
+            }}
+          >
             <h2 className="text-base">------------ A PAGE FROM YOUR LIFE</h2>
             {/* title */}
             {isEditing ? (
