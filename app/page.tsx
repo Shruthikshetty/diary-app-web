@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { Endpoints } from "./constants/endpoints";
 import { formatDate } from "./utils/date";
 
+// type------------------------
 type Entries = {
   _id: string;
   userId: string;
@@ -16,6 +17,7 @@ type Entries = {
   mood: string;
   content: string;
   date: string; // date string
+  isFavorite: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -24,6 +26,8 @@ type GetEntriesResponse = {
   data: Entries[];
   success: boolean;
 };
+
+// components -------------------
 
 export default function Home() {
   const [entries, setEntries] = useState<Entries[]>([]);
@@ -52,7 +56,15 @@ export default function Home() {
   }
 
   // function to handle update the entry
-  async function handleUpdateEntry() {
+  async function handleUpdateEntry({
+    title,
+    content,
+    isFavorite,
+  }: {
+    title?: string;
+    content?: string;
+    isFavorite?: boolean;
+  }) {
     // update the data
     const res = await fetch(Endpoints.updateEntry + `/${selectedEntry?._id}`, {
       method: "PUT",
@@ -62,8 +74,9 @@ export default function Home() {
       },
       body: JSON.stringify({
         _id: selectedEntry?._id,
-        title: newTitle,
-        content: newContent,
+        title: title,
+        content: content,
+        isFavorite: isFavorite,
       }),
     });
     if (!res.ok) {
@@ -73,7 +86,15 @@ export default function Home() {
     fetchEntries().then(() => {
       setIsEditing(false);
       setSelectedEntry((prev) =>
-        prev ? { ...prev, title: newTitle, content: newContent } : null,
+        prev
+          ? {
+              ...prev,
+              title: newTitle || prev.title,
+              content: newContent || prev.content,
+              isFavorite:
+                isFavorite === undefined ? prev.isFavorite : isFavorite,
+            }
+          : null,
       );
     });
   }
@@ -174,9 +195,16 @@ export default function Home() {
                 {/* date */}
                 <div className="flex flex-row justify-between">
                   <p className="text-sm text-left">{formatDate(entry.date)}</p>
-                  <div>
-                    <Image src="/star.svg" alt="star" width={16} height={16} />
-                  </div>
+                  {entry.isFavorite ? (
+                    <div>
+                      <Image
+                        src="/star-filled.svg"
+                        alt="star"
+                        width={16}
+                        height={16}
+                      />
+                    </div>
+                  ) : null}
                 </div>
                 {/* title */}
                 <p className="text-header text-base text-left">{entry.title}</p>
@@ -193,9 +221,19 @@ export default function Home() {
           <div className="px-5 py-3 border-b-2 border-border w-full flex flex-row justify-between items-center ">
             <p>My journal &gt; {formatDate(selectedEntry?.date)}</p>
             <div className="flex flex-row gap-5">
-              <button>
-                {/*@TODO toggle based on fav or not */}
-                <Image src={"/star.svg"} alt="star" width={16} height={16} />
+              <button
+                onClick={() => {
+                  handleUpdateEntry({ isFavorite: !selectedEntry?.isFavorite });
+                }}
+              >
+                <Image
+                  src={
+                    selectedEntry?.isFavorite ? "/star-filled.svg" : "/star.svg"
+                  }
+                  alt="star"
+                  width={16}
+                  height={16}
+                />
               </button>
               <button
                 className="hover:bg-border/50 p-3 rounded-xl"
@@ -246,7 +284,16 @@ export default function Home() {
               <div className="mt-5 flex justify-end">
                 <AppButton
                   text={isAdding ? "Add" : "Update"}
-                  onClick={isAdding ? handleAddEntry : handleUpdateEntry}
+                  onClick={() => {
+                    if (isAdding) {
+                      handleAddEntry();
+                    } else {
+                      handleUpdateEntry({
+                        title: newTitle,
+                        content: newContent,
+                      });
+                    }
+                  }}
                   className="max-w-[20%]"
                 />
               </div>

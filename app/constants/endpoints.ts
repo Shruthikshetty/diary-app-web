@@ -6,4 +6,5 @@ export const Endpoints = {
   getAllEntries: baseUrl + "api/diary",
   updateEntry: baseUrl + "api/diary",
   createEntry: baseUrl + "api/diary",
+  deleteEntry: baseUrl + "api/diary",
 };
