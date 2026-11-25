@@ -12,8 +12,8 @@ import useScreenLoader from "../../components/screen-loader";
 function SignUp() {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
-  const [email, setEmail] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [email, setEmail] = useState("");
 
   // loader state
   const { setScreenLoader } = useScreenLoader();
