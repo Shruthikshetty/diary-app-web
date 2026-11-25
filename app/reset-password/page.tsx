@@ -7,7 +7,7 @@ import { AppInput } from "@/components/input";
 import useScreenLoader from "@/components/screen-loader";
 import { Endpoints } from "@/constants/endpoints";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ResetPassWord() {
   const [pass, setPass] = useState("");
@@ -21,12 +21,13 @@ function ResetPassWord() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  if (!token) {
-    alert("The reset link is invalid or missing its token.");
-    // navigate back to login
-    route.push("/login");
-    return;
-  }
+  useEffect(() => {
+    if (!token) {
+      alert("Invalid link or token expired");
+      // navigate to login
+      route.push("/login");
+    }
+  }, [route, token]);
 
   async function handleReset() {
     try {
