@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { AppButton } from "../components/button";
-import { AppInput } from "../components/input";
-import { Endpoints } from "../constants/endpoints";
+import { AppButton } from "../../components/button";
+import { AppInput } from "../../components/input";
+import { Endpoints } from "../../constants/endpoints";
 import { useRouter } from "next/navigation";
-import { AppHeader } from "../components/header";
-import { AppFooter } from "../components/footer";
-import useScreenLoader from "../components/screen-loader";
+import { AppHeader } from "../../components/header";
+import { AppFooter } from "../../components/footer";
+import useScreenLoader from "../../components/screen-loader";
 
 function Login() {
   const [name, setName] = useState("");

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { AppButton } from "../components/button";
-import { AppFooter } from "../components/footer";
-import { AppHeader } from "../components/header";
-import { AppInput } from "../components/input";
-import { Endpoints } from "../constants/endpoints";
+import { AppButton } from "../../components/button";
+import { AppFooter } from "../../components/footer";
+import { AppHeader } from "../../components/header";
+import { AppInput } from "../../components/input";
+import { Endpoints } from "../../constants/endpoints";
 import { useRouter } from "next/navigation";
-import useScreenLoader from "../components/screen-loader";
+import useScreenLoader from "../../components/screen-loader";
 
 function SignUp() {
   const [name, setName] = useState("");

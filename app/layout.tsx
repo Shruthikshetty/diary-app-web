@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ScreenLoaderProvider } from "./components/screen-loader";
+import { ScreenLoaderProvider } from "../components/screen-loader";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",

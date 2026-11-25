@@ -1,14 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AppButton } from "./components/button";
-import { AppHeader } from "./components/header";
-import { AppInput } from "./components/input";
+import { AppButton } from "../components/button";
+import { AppHeader } from "../components/header";
+import { AppInput } from "../components/input";
 import Image from "next/image";
 import { useEffect } from "react";
-import { Endpoints } from "./constants/endpoints";
-import { formatDate } from "./utils/date";
-import useScreenLoader from "./components/screen-loader";
+import { Endpoints } from "../constants/endpoints";
+import { formatDate } from "../utils/date";
+import useScreenLoader from "../components/screen-loader";
 
 // type------------------------
 type Entries = {
