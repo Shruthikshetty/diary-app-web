@@ -341,7 +341,6 @@ export default function Home() {
             ) : (
               <p className="whitespace-pre-wrap">{selectedEntry?.content}</p>
             )}
-
             {isEditing ? (
               <div className="mt-5 flex justify-end">
                 <AppButton
