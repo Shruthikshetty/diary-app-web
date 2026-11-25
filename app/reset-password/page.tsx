@@ -21,6 +21,13 @@ function ResetPassWord() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
+  if (!token) {
+    alert("The reset link is invalid or missing its token.");
+    // navigate back to login
+    route.push("/login");
+    return;
+  }
+
   async function handleReset() {
     try {
       setScreenLoader(true);
