@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { Endpoints } from "./constants/endpoints";
 import { formatDate } from "./utils/date";
+import useScreenLoader from "./components/screen-loader";
 
 // type------------------------
 type Entries = {
@@ -39,6 +40,8 @@ export default function Home() {
   const [selectedTab, setSelectedTab] = useState<"all_entries" | "favorite">(
     "all_entries",
   );
+  // loader state
+  const { setScreenLoader } = useScreenLoader();
 
   // filtered entries based on tab
   const filteredEntries = useMemo(
@@ -54,21 +57,27 @@ export default function Home() {
 
   // function to fetch entries
   async function fetchEntries() {
-    // fetch data from server
-    const res = await fetch(Endpoints.getAllEntries, {
-      method: "GET",
-      credentials: "include",
-    });
-    const data: GetEntriesResponse = await res.json();
-    if (!res.ok) {
-      alert("failed to fetch your diary entries");
+    try {
+      setScreenLoader(true);
+      // fetch data from server
+      const res = await fetch(Endpoints.getAllEntries, {
+        method: "GET",
+        credentials: "include",
+      });
+      const data: GetEntriesResponse = await res.json();
+      if (!res.ok) {
+        alert("failed to fetch your diary entries");
+        return;
+      }
+      setEntries(data.data);
+      // set a default selected
+      if (data.data.length > 0 && !selectedEntry) {
+        setSelectedEntry(data.data[0]);
+      }
+      return data.data;
+    } finally {
+      setScreenLoader(false);
     }
-    setEntries(data.data);
-    // set a default selected
-    if (data.data.length > 0 && !selectedEntry) {
-      setSelectedEntry(data.data[0]);
-    }
-    return data.data;
   }
 
   // function to handle update the entry
@@ -81,89 +90,107 @@ export default function Home() {
     content?: string;
     isFavorite?: boolean;
   }) {
-    // update the data
-    const res = await fetch(Endpoints.updateEntry + `/${selectedEntry?._id}`, {
-      method: "PUT",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        _id: selectedEntry?._id,
-        title: title,
-        content: content,
-        isFavorite: isFavorite,
-      }),
-    });
-    if (!res.ok) {
-      alert("failed to fetch your diary entries");
-    }
-    // refetch the data
-    fetchEntries().then(() => {
-      setIsEditing(false);
-      setSelectedEntry((prev) =>
-        prev
-          ? {
-              ...prev,
-              title: newTitle || prev.title,
-              content: newContent || prev.content,
-              isFavorite:
-                isFavorite === undefined ? prev.isFavorite : isFavorite,
-            }
-          : null,
+    try {
+      setScreenLoader(true);
+      // update the data
+      const res = await fetch(
+        Endpoints.updateEntry + `/${selectedEntry?._id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            _id: selectedEntry?._id,
+            title: title,
+            content: content,
+            isFavorite: isFavorite,
+          }),
+        },
       );
-    });
+      if (!res.ok) {
+        alert("failed to fetch your diary entries");
+      }
+      // refetch the data
+      fetchEntries().then(() => {
+        setIsEditing(false);
+        setSelectedEntry((prev) =>
+          prev
+            ? {
+                ...prev,
+                title: newTitle || prev.title,
+                content: newContent || prev.content,
+                isFavorite:
+                  isFavorite === undefined ? prev.isFavorite : isFavorite,
+              }
+            : null,
+        );
+      });
+    } finally {
+      setScreenLoader(false);
+    }
   }
 
   // function to handle add the entry
   async function handleAddEntry() {
-    // add the data
-    const res = await fetch(Endpoints.createEntry, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: newTitle,
-        content: newContent,
-        date: new Date().toISOString(),
-        mood: "happy", //@TODO fix later
-      }),
-    });
-    if (!res.ok) {
-      alert("failed to add your diary entry");
+    try {
+      setScreenLoader(true);
+      // add the data
+      const res = await fetch(Endpoints.createEntry, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: newTitle,
+          content: newContent,
+          date: new Date().toISOString(),
+          mood: "happy", //@TODO fix later
+        }),
+      });
+      if (!res.ok) {
+        alert("failed to add your diary entry");
+      }
+      // refetch the data
+      fetchEntries().then(() => {
+        setIsAdding(false);
+        setIsEditing(false);
+      });
+    } finally {
+      setScreenLoader(false);
     }
-    // refetch the data
-    fetchEntries().then(() => {
-      setIsAdding(false);
-      setIsEditing(false);
-    });
   }
 
   // function to handle delete a entry
   async function handleDelete(id: string) {
-    const res = await fetch(Endpoints.deleteEntry + `/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
+    try {
+      setScreenLoader(true);
+      const res = await fetch(Endpoints.deleteEntry + `/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
 
-    if (!res.ok) {
-      alert("failed to delete your diary entry");
-    }
-
-    // refetch the data
-    await fetchEntries().then((data) => {
-      if (selectedEntry?._id === id) {
-        setSelectedEntry(data[0]);
+      if (!res.ok) {
+        alert("failed to delete your diary entry");
       }
-    });
+
+      // refetch the data
+      await fetchEntries().then((data) => {
+        if (selectedEntry?._id === id) {
+          setSelectedEntry(data[0]);
+        }
+      });
+    } finally {
+      setScreenLoader(false);
+    }
   }
 
   // fetch data
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchEntries();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="h-screen flex-1 flex-col flex">

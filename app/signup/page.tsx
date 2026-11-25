@@ -7,11 +7,15 @@ import { AppHeader } from "../components/header";
 import { AppInput } from "../components/input";
 import { Endpoints } from "../constants/endpoints";
 import { useRouter } from "next/navigation";
+import useScreenLoader from "../components/screen-loader";
 
 function SignUp() {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+
+  // loader state
+  const { setScreenLoader } = useScreenLoader();
 
   const route = useRouter();
 
@@ -28,6 +32,7 @@ function SignUp() {
     }
     // call api
     try {
+      setScreenLoader(true);
       const response = await fetch(Endpoints.signup, {
         method: "POST",
         body: JSON.stringify({
@@ -50,6 +55,8 @@ function SignUp() {
       route.push("/login");
     } catch {
       alert("Something went wrong. Please try again.");
+    } finally {
+      setScreenLoader(false);
     }
   };
 

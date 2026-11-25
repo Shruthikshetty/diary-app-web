@@ -42,11 +42,11 @@ export function ScreenLoaderProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [screenLoader, setScreenLoader] = useState(true);
+  const [screenLoader, setScreenLoader] = useState(false);
 
   return (
     <ScreenLoaderContext.Provider value={{ screenLoader, setScreenLoader }}>
-      <ScreenLoader />
+      {screenLoader ? <ScreenLoader /> : null}
       {children}
     </ScreenLoaderContext.Provider>
   );
