@@ -178,7 +178,7 @@ export default function Home() {
 
       // refetch the data
       await fetchEntries().then((data) => {
-        if (selectedEntry?._id === id) {
+        if (selectedEntry?._id === id && data?.length) {
           setSelectedEntry(data[0]);
         }
       });
