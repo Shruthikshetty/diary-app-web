@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AppButton } from "./components/button";
 import { AppHeader } from "./components/header";
 import { AppInput } from "./components/input";
@@ -36,6 +36,21 @@ export default function Home() {
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState(selectedEntry?.title || "");
   const [newContent, setNewContent] = useState(selectedEntry?.content || "");
+  const [selectedTab, setSelectedTab] = useState<"all_entries" | "favorite">(
+    "all_entries",
+  );
+
+  // filtered entries based on tab
+  const filteredEntries = useMemo(
+    () =>
+      entries?.filter((entry) => {
+        if (selectedTab === "all_entries") {
+          return true;
+        }
+        return entry.isFavorite;
+      }) ?? [],
+    [entries, selectedTab],
+  );
 
   // function to fetch entries
   async function fetchEntries() {
@@ -160,10 +175,22 @@ export default function Home() {
           <AppInput placeholder="Search your thoughts..." />
 
           {/* tabs */}
-          <div className=" flex flex-row items-center text-center w-full border-b border-border pb-2">
-            <button className=" flex-1">All entries</button>
+          <div className="flex flex-row items-center text-center w-full border-b border-border">
+            <button
+              className={`flex-1 pb-2 border-b-3 transition-colors ${selectedTab === "all_entries" ? "border-header" : "border-transparent "}`}
+              onClick={() => {
+                setSelectedTab("all_entries");
+              }}
+            >
+              All entries
+            </button>
             {/* show only if favorite */}
-            <button className="flex-1 flex items-center gap-1 text-center">
+            <button
+              className={`flex-1 flex items-center justify-center gap-1 text-center pb-2 border-b-3 transition-colors ${selectedTab === "favorite" ? "border-header" : "border-transparent "}`}
+              onClick={() => {
+                setSelectedTab("favorite");
+              }}
+            >
               <Image src="/star-filled.svg" alt="star" width={16} height={16} />{" "}
               Favorites
             </button>
@@ -178,7 +205,7 @@ export default function Home() {
               scrollbarColor: "var(--petal) transparent",
             }}
           >
-            {entries?.map((entry) => (
+            {filteredEntries?.map((entry) => (
               <button
                 className={`flex flex-col gap-1 hover:border-border hover:bg-border/80 border-2 border-transparent rounded-lg transition-all p-2 hover:cursor-pointer ${
                   selectedEntry?._id === entry._id
