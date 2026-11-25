@@ -55,6 +55,22 @@ function Login() {
     }
   };
 
+  // handle forgot password
+  const handleForgotPassword = async () => {
+    try {
+      setScreenLoader(true);
+      if (!name) {
+        alert("Please fill in name before triggering forgot password");
+      }
+      await fetch(Endpoints.forgotPass + `/${name}`, {
+        method: "POST",
+      });
+      alert("check your email for reset link");
+    } finally {
+      setScreenLoader(false);
+    }
+  };
+
   return (
     <div className="flex-1 flex-col flex justify-between">
       {/* header */}
@@ -84,6 +100,7 @@ function Login() {
             placeholder="Password"
             title="Password"
             rightbuttonText="Forgot password?"
+            rightButtonOnClick={handleForgotPassword}
           />
           {/* button login*/}
           <AppButton text="Log in" onClick={onSubmit} />

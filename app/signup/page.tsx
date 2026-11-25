@@ -12,6 +12,7 @@ import useScreenLoader from "../components/screen-loader";
 function SignUp() {
   const [name, setName] = useState("");
   const [pass, setPass] = useState("");
+  const [email, setEmail] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
 
   // loader state
@@ -38,6 +39,7 @@ function SignUp() {
         body: JSON.stringify({
           name: name,
           password: pass,
+          email: email ?? undefined,
         }),
         signal: AbortSignal.timeout(5000), // 5 sec
       });
@@ -81,6 +83,14 @@ function SignUp() {
             onChange={(e) => setName(e.target.value)}
             placeholder="What should I call you?"
             title="Your name"
+            id={"name"}
+          />
+          {/*email filed */}
+          <AppInput
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email (optional)"
+            title="Your email"
             id={"name"}
           />
           {/* password filed */}

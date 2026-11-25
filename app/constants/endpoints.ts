@@ -7,4 +7,5 @@ export const Endpoints = {
   updateEntry: baseUrl + "api/diary",
   createEntry: baseUrl + "api/diary",
   deleteEntry: baseUrl + "api/diary",
+  forgotPass: baseUrl + "api/forgot-password",
 };

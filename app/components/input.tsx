@@ -7,10 +7,12 @@ export function AppInput({
   className,
   title,
   rightbuttonText,
+  rightButtonOnClick,
   ...rest
 }: InputHTMLAttributes<HTMLInputElement> & {
   title?: string;
   rightbuttonText?: string;
+  rightButtonOnClick?: () => void;
 }) {
   return (
     <div>
@@ -21,7 +23,7 @@ export function AppInput({
           </label>
           {/* right button text */}
           {rightbuttonText && (
-            <button>
+            <button onClick={rightButtonOnClick}>
               <span className="text-primary text-sm">{rightbuttonText}</span>
             </button>
           )}
