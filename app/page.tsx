@@ -68,6 +68,7 @@ export default function Home() {
     if (data.data.length > 0 && !selectedEntry) {
       setSelectedEntry(data.data[0]);
     }
+    return data.data;
   }
 
   // function to handle update the entry
@@ -137,6 +138,25 @@ export default function Home() {
     fetchEntries().then(() => {
       setIsAdding(false);
       setIsEditing(false);
+    });
+  }
+
+  // function to handle delete a entry
+  async function handleDelete(id: string) {
+    const res = await fetch(Endpoints.deleteEntry + `/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      alert("failed to delete your diary entry");
+    }
+
+    // refetch the data
+    await fetchEntries().then((data) => {
+      if (selectedEntry?._id === id) {
+        setSelectedEntry(data[0]);
+      }
     });
   }
 
@@ -222,16 +242,31 @@ export default function Home() {
                 {/* date */}
                 <div className="flex flex-row justify-between">
                   <p className="text-sm text-left">{formatDate(entry.date)}</p>
-                  {entry.isFavorite ? (
-                    <div>
+                  <div className="flex gap-2">
+                    {entry.isFavorite ? (
+                      <div>
+                        <Image
+                          src="/star-filled.svg"
+                          alt="star"
+                          width={16}
+                          height={16}
+                        />
+                      </div>
+                    ) : null}
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(entry._id);
+                      }}
+                    >
                       <Image
-                        src="/star-filled.svg"
-                        alt="star"
+                        src="/trash.svg"
+                        alt="trash"
                         width={16}
                         height={16}
                       />
                     </div>
-                  ) : null}
+                  </div>
                 </div>
                 {/* title */}
                 <p className="text-header text-base text-left">{entry.title}</p>
