@@ -231,6 +231,7 @@ export default function Home() {
               setSelectedEntry(null);
               setNewTitle("");
               setNewContent("");
+              setIsTrayOpen(false);
             }}
           />
           {/* search your thoughts */}
@@ -279,6 +280,7 @@ export default function Home() {
                   setSelectedEntry(entry);
                   setNewTitle(entry.title);
                   setNewContent(entry.content);
+                  setIsTrayOpen(false);
                 }}
               >
                 {/* date */}
@@ -382,6 +384,7 @@ export default function Home() {
                   <input
                     className="border-none outline-none text-3xl text-header font-semibold py-5 w-full"
                     value={newTitle}
+                    placeholder="Enter a title..."
                     onChange={(e) => setNewTitle(e.target.value)}
                   ></input>
                 ) : (
@@ -396,6 +399,7 @@ export default function Home() {
                   <textarea
                     className="border-none outline-none w-full h-[50%] min-h-40"
                     value={newContent}
+                    placeholder="Enter your thoughts..."
                     onChange={(e) => setNewContent(e.target.value)}
                   ></textarea>
                 ) : (
