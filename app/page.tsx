@@ -52,19 +52,8 @@ export default function Home() {
 
   // filtered entries based on tab
   const filteredEntries = useMemo(() => {
-    let filtered = entries ?? [];
-
-    // in case of fav filter
-    if (selectedTab === "favorite") {
-      filtered = filtered.filter((entry) => entry.isFavorite);
-    }
-
-    // if query filter
-    if (debouncedQuery.trim()) {
-      filtered = filterEntries(debouncedQuery, filtered);
-    }
-
-    return filtered;
+    if (!debouncedQuery && !(selectedTab == "favorite")) return entries;
+    return filterEntries(debouncedQuery, entries, selectedTab === "favorite");
   }, [entries, selectedTab, debouncedQuery]);
 
   // function to fetch entries
