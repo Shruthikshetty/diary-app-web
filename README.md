@@ -1,17 +1,20 @@
 # Diary App
 
-A simple and personal journaling web application to capture, organize, and revisit your daily thoughts, moments, and reflections.
+A simple and personal journalizing web application to capture, organize, and revisit your daily thoughts, moments, and reflections.
+focusing only on minimal features and clean ui . with almost zero addition dependencies.
 
 > **Backend:** This frontend connects to the [Diary Entry Backend](https://github.com/Shruthikshetty/diary-entry-backend). See the backend repository for server setup and API documentation.
 
 ## Screenshots
 
 ### Home / Journal View
+
 ![Home Screen](./public/app-ss/home.png)
 
 ### Authentication
-| Login | Sign Up |
-| :---: | :---: |
+
+|                   Login                    |                   Sign Up                    |
+| :----------------------------------------: | :------------------------------------------: |
 | ![Login Screen](./public/app-ss/login.png) | ![Signup Screen](./public/app-ss/signup.png) |
 
 ## Features
