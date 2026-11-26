@@ -34,6 +34,7 @@ function Login() {
           name: name,
           password: pass,
         }),
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
 

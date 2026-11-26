@@ -1,4 +1,7 @@
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+const baseUrl = (process.env.NEXT_PUBLIC_BACKEND_URL ?? "").replace(
+  /\/?$/,
+  "/",
+);
 
 export const Endpoints = {
   login: baseUrl + "api/login",
