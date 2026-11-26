@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import { AppButton } from "../components/button";
 import { AppHeader } from "../components/header";
 import { AppInput } from "../components/input";
@@ -9,9 +9,11 @@ import { useEffect } from "react";
 import { Endpoints } from "../constants/endpoints";
 import { formatDate } from "../utils/date";
 import useScreenLoader from "../components/screen-loader";
+import { filterEntries } from "@/utils/filter";
 
 // type------------------------
-type Entries = {
+export type Entries = {
+  includes(searchString: string): unknown;
   _id: string;
   userId: string;
   title: string;
@@ -41,20 +43,29 @@ export default function Home() {
     "all_entries",
   );
   const [isTrayOpen, setIsTrayOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   // loader state
   const { setScreenLoader } = useScreenLoader();
 
+  // difference queries
+  const debouncedQuery = useDeferredValue(searchQuery);
+
   // filtered entries based on tab
-  const filteredEntries = useMemo(
-    () =>
-      entries?.filter((entry) => {
-        if (selectedTab === "all_entries") {
-          return true;
-        }
-        return entry.isFavorite;
-      }) ?? [],
-    [entries, selectedTab],
-  );
+  const filteredEntries = useMemo(() => {
+    let filtered = entries ?? [];
+
+    // in case of fav filter
+    if (selectedTab === "favorite") {
+      filtered = filtered.filter((entry) => entry.isFavorite);
+    }
+
+    // if query filter
+    if (debouncedQuery.trim()) {
+      filtered = filterEntries(debouncedQuery, filtered);
+    }
+
+    return filtered;
+  }, [entries, selectedTab, debouncedQuery]);
 
   // function to fetch entries
   async function fetchEntries() {
@@ -236,8 +247,10 @@ export default function Home() {
           />
           {/* search your thoughts */}
           <AppInput
+            value={searchQuery}
             placeholder="Search your thoughts..."
             className="text-sm sm:text-base"
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
 
           {/* tabs */}
