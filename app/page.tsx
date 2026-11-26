@@ -217,7 +217,7 @@ export default function Home() {
           <div className="flex flex-row justify-between items-center">
             <h1 className="text-lg font-semibold text-header">Your journal</h1>
             {/* no of entries */}
-            <p className="text-xs p-1 border border-border rounded-md">
+            <p className="text-xs p-0.5 sm:p-1 border border-border rounded-md">
               {entries?.length ?? 0} entries
             </p>
           </div>
@@ -235,12 +235,15 @@ export default function Home() {
             }}
           />
           {/* search your thoughts */}
-          <AppInput placeholder="Search your thoughts..." />
+          <AppInput
+            placeholder="Search your thoughts..."
+            className="text-sm sm:text-base"
+          />
 
           {/* tabs */}
           <div className="flex flex-row items-center text-center w-full border-b border-border">
             <button
-              className={`flex-1 pb-2 border-b-3 transition-colors ${selectedTab === "all_entries" ? "border-header" : "border-transparent "}`}
+              className={`flex-1 pb-2 border-b-3 transition-colors text-sm sm:text-base ${selectedTab === "all_entries" ? "border-header" : "border-transparent "}`}
               onClick={() => {
                 setSelectedTab("all_entries");
               }}
@@ -249,7 +252,7 @@ export default function Home() {
             </button>
             {/* show only if favorite */}
             <button
-              className={`flex-1 flex items-center justify-center gap-1 text-center pb-2 border-b-3 transition-colors ${selectedTab === "favorite" ? "border-header" : "border-transparent "}`}
+              className={`flex-1 flex items-center justify-center gap-1 text-center pb-2 border-b-3 transition-colors text-sm sm:text-base ${selectedTab === "favorite" ? "border-header" : "border-transparent "}`}
               onClick={() => {
                 setSelectedTab("favorite");
               }}
@@ -333,7 +336,9 @@ export default function Home() {
               >
                 ☰
               </button>
-              <p>My journal &gt; {formatDate(selectedEntry?.date)}</p>
+              <p className="text-sm sm:text-base">
+                My journal &gt; {formatDate(selectedEntry?.date)}
+              </p>
             </div>
             <div className="flex flex-row gap-5">
               <button
@@ -351,7 +356,7 @@ export default function Home() {
                 />
               </button>
               <button
-                className="hover:bg-border/50 p-3 rounded-xl"
+                className="hover:bg-border/50 p-3 rounded-xl text-sm sm:text-base"
                 onClick={() => {
                   setIsEditing(true);
                   setNewTitle(selectedEntry?.title || "");
@@ -364,7 +369,7 @@ export default function Home() {
           </div>
           {/* main content */}
           <div
-            className="py-10 px-20 h-full overflow-auto"
+            className="py-10 px-5 sm:px-20 h-full overflow-auto"
             style={{
               scrollbarWidth: "thin",
             }}
