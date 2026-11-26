@@ -344,48 +344,61 @@ export default function Home() {
             }}
           >
             <h2 className="text-base">------------ A PAGE FROM YOUR LIFE</h2>
-            {/* title */}
-            {isEditing ? (
-              <input
-                className="border-none outline-none text-3xl text-header font-semibold py-5 w-full"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-              ></input>
-            ) : (
-              <p className="text-3xl text-header font-semibold py-5">
-                {selectedEntry?.title}
-              </p>
-            )}
 
-            <div className="w-full border-border border-b my-5"></div>
-            {/* separator */}
-            {isEditing ? (
-              <textarea
-                className="border-none outline-none w-full h-[50%] min-h-40"
-                value={newContent}
-                onChange={(e) => setNewContent(e.target.value)}
-              ></textarea>
-            ) : (
-              <p className="whitespace-pre-wrap">{selectedEntry?.content}</p>
-            )}
-            {isEditing ? (
-              <div className="mt-5 flex justify-end">
-                <AppButton
-                  text={isAdding ? "Add" : "Update"}
-                  onClick={() => {
-                    if (isAdding) {
-                      handleAddEntry();
-                    } else {
-                      handleUpdateEntry({
-                        title: newTitle,
-                        content: newContent,
-                      });
-                    }
-                  }}
-                  className="max-w-[20%]"
-                />
+            {filteredEntries.length == 0 && !selectedEntry ? (
+              <div className="flex items-center justify-center h-[70%]">
+                <p className="text-xl text-header font-semibold text-center">
+                  No entries yet. Start capturing your thoughts!
+                </p>
               </div>
-            ) : null}
+            ) : (
+              <>
+                {/* title */}
+                {isEditing ? (
+                  <input
+                    className="border-none outline-none text-3xl text-header font-semibold py-5 w-full"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                  ></input>
+                ) : (
+                  <p className="text-3xl text-header font-semibold py-5">
+                    {selectedEntry?.title}
+                  </p>
+                )}
+
+                <div className="w-full border-border border-b my-5"></div>
+                {/* separator */}
+                {isEditing ? (
+                  <textarea
+                    className="border-none outline-none w-full h-[50%] min-h-40"
+                    value={newContent}
+                    onChange={(e) => setNewContent(e.target.value)}
+                  ></textarea>
+                ) : (
+                  <p className="whitespace-pre-wrap">
+                    {selectedEntry?.content}
+                  </p>
+                )}
+                {isEditing ? (
+                  <div className="mt-5 flex justify-end">
+                    <AppButton
+                      text={isAdding ? "Add" : "Update"}
+                      onClick={() => {
+                        if (isAdding) {
+                          handleAddEntry();
+                        } else {
+                          handleUpdateEntry({
+                            title: newTitle,
+                            content: newContent,
+                          });
+                        }
+                      }}
+                      className="max-w-[20%]"
+                    />
+                  </div>
+                ) : null}
+              </>
+            )}
           </div>
         </div>
       </main>
