@@ -40,6 +40,7 @@ export default function Home() {
   const [selectedTab, setSelectedTab] = useState<"all_entries" | "favorite">(
     "all_entries",
   );
+  const [isTrayOpen, setIsTrayOpen] = useState(false);
   // loader state
   const { setScreenLoader } = useScreenLoader();
 
@@ -196,8 +197,22 @@ export default function Home() {
     <div className="h-screen flex-1 flex-col flex">
       <AppHeader />
       <main className="flex-1 flex overflow-hidden">
+        {/* overlay */}
+        {isTrayOpen && (
+          <div
+            className="fixed inset-0 bg-black/40 z-30 md:hidden"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsTrayOpen(false);
+            }}
+          />
+        )}
         {/* side tray  */}
-        <div className="w-[30%] md:w-[25%] bg-border/50 border-r border-border h-full p-2 md:p-5 flex flex-col gap-5">
+        <div
+          className={`fixed inset-y-0 left-0 z-40 w-72  sm:max-w-[60vw] max-w-[45%] bg-surface md:bg-border/50 border-r border-border h-full p-4 md:p-5 flex flex-col gap-5 transform transition-transform duration-300 ease-in-out md:static md:w-[25%] md:translate-x-0 ${
+            isTrayOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
           {/*title  */}
           <div className="flex flex-row justify-between items-center">
             <h1 className="text-lg font-semibold text-header">Your journal</h1>
@@ -307,8 +322,17 @@ export default function Home() {
         {/* diary content */}
         <div className="flex flex-col h-full w-full">
           {/* utilities */}
-          <div className="px-5 py-3 border-b-2 border-border w-full flex flex-row justify-between items-center ">
-            <p>My journal &gt; {formatDate(selectedEntry?.date)}</p>
+          <div className="px-5 py-3 border-b-2 border-border w-full flex flex-row justify-between items-center">
+            <div className="flex items-center gap-3">
+              <button
+                className="md:hidden p-2 rounded-lg border border-border hover:bg-border/50"
+                onClick={() => setIsTrayOpen(true)}
+                aria-label="Open entries tray"
+              >
+                ☰
+              </button>
+              <p>My journal &gt; {formatDate(selectedEntry?.date)}</p>
+            </div>
             <div className="flex flex-row gap-5">
               <button
                 onClick={() => {
@@ -345,7 +369,7 @@ export default function Home() {
           >
             <h2 className="text-base">------------ A PAGE FROM YOUR LIFE</h2>
 
-            {filteredEntries.length == 0 && !selectedEntry ? (
+            {filteredEntries.length == 0 && !selectedEntry && !isEditing ? (
               <div className="flex items-center justify-center h-[70%]">
                 <p className="text-xl text-header font-semibold text-center">
                   No entries yet. Start capturing your thoughts!
