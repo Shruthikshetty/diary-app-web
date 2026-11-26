@@ -7,7 +7,7 @@ import { AppInput } from "@/components/input";
 import useScreenLoader from "@/components/screen-loader";
 import { Endpoints } from "@/constants/endpoints";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 function ResetPassWord() {
   const [pass, setPass] = useState("");
@@ -102,4 +102,13 @@ function ResetPassWord() {
   );
 }
 
-export default ResetPassWord;
+// wrap in suspense so that search params are loaded
+function ResetPage() {
+  return (
+    <Suspense>
+      <ResetPassWord />
+    </Suspense>
+  );
+}
+
+export default ResetPage;
