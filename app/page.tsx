@@ -195,7 +195,7 @@ export default function Home() {
   }, []);
   return (
     <div className="h-screen flex-1 flex-col flex">
-      <AppHeader />
+      <AppHeader showLogOut />
       <main className="flex-1 flex overflow-hidden">
         {/* overlay */}
         {isTrayOpen && (
