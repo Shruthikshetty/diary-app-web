@@ -36,10 +36,11 @@ function SignUp() {
       setScreenLoader(true);
       const response = await fetch(Endpoints.signup, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: name,
+          name: name.trim() || undefined,
           password: pass,
-          email: email ?? undefined,
+          email: email.trim(),
         }),
         signal: AbortSignal.timeout(5000), // 5 sec
       });
@@ -91,7 +92,7 @@ function SignUp() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             title="Your email"
-            id={"name"}
+            id={"email"}
           />
           {/* password filed */}
           <AppInput

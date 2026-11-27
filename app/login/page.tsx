@@ -58,19 +58,22 @@ function Login() {
 
   // handle forgot password
   const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      alert("Please fill in email before triggering forgot password");
+      return;
+    }
+
     try {
       setScreenLoader(true);
-      if (!email) {
-        alert("Please fill in email before triggering forgot password");
-      }
       await fetch(Endpoints.forgotPass, {
-        body: JSON.stringify({
-          email: email,
-        }),
-        headers: { "Content-Type": "application/json" },
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+        }),
       });
-      alert("check your email for reset link");
+
+      alert("Check your email for reset link");
     } finally {
       setScreenLoader(false);
     }
@@ -94,7 +97,7 @@ function Login() {
           <AppInput
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="example@gamil.com"
+            placeholder="example@gmail.com"
             title="Email"
             id={"email"}
           />

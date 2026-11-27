@@ -1,4 +1,4 @@
-"use clint";
+"use client";
 
 import { Endpoints } from "@/constants/endpoints";
 import useScreenLoader from "./screen-loader";
@@ -17,11 +17,14 @@ export function AppHeader({ showLogOut = false }: { showLogOut?: boolean }) {
       });
 
       if (!res.ok) {
-        alert("failed to delete your diary entry");
+        alert("Failed to log out");
+        return;
       }
 
       // push to login
       router.push("/login");
+    } catch {
+      alert("Something went wrong. Please try again.");
     } finally {
       setScreenLoader(false);
     }
