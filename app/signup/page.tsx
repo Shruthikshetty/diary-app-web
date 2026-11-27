@@ -22,7 +22,7 @@ function SignUp() {
 
   // handle create account
   const createAccount = async () => {
-    if (!name || !pass || !confirmPass) {
+    if (!pass || !confirmPass || !email) {
       alert("Please fill in all fields");
       return;
     }
@@ -82,14 +82,14 @@ function SignUp() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="What should I call you?"
-            title="Your name"
+            title="Your name (optional)"
             id={"name"}
           />
           {/*email filed */}
           <AppInput
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email (optional)"
+            placeholder="Email"
             title="Your email"
             id={"name"}
           />

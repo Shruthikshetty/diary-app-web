@@ -10,7 +10,7 @@ import { AppFooter } from "../../components/footer";
 import useScreenLoader from "../../components/screen-loader";
 
 function Login() {
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
   // loader state
@@ -20,7 +20,7 @@ function Login() {
 
   // handle submit
   const onSubmit = async () => {
-    if (!name || !pass) {
+    if (!email || !pass) {
       alert("Please fill in all fields");
       return;
     }
@@ -31,7 +31,7 @@ function Login() {
       const response = await fetch(Endpoints.login, {
         method: "POST",
         body: JSON.stringify({
-          name: name,
+          email: email,
           password: pass,
         }),
         headers: { "Content-Type": "application/json" },
@@ -60,10 +60,14 @@ function Login() {
   const handleForgotPassword = async () => {
     try {
       setScreenLoader(true);
-      if (!name) {
-        alert("Please fill in name before triggering forgot password");
+      if (!email) {
+        alert("Please fill in email before triggering forgot password");
       }
-      await fetch(Endpoints.forgotPass + `/${name}`, {
+      await fetch(Endpoints.forgotPass, {
+        body: JSON.stringify({
+          email: email,
+        }),
+        headers: { "Content-Type": "application/json" },
         method: "POST",
       });
       alert("check your email for reset link");
@@ -86,13 +90,13 @@ function Login() {
               Settle in. Your thoughts are right where you left them.
             </p>
           </div>
-          {/* name field */}
+          {/* email field */}
           <AppInput
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="First name"
-            title="First name"
-            id={"name"}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="example@gamil.com"
+            title="Email"
+            id={"email"}
           />
           {/* password filed */}
           <AppInput
